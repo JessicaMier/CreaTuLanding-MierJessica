@@ -1,0 +1,9 @@
+.logo{
+  width: 150px;
+  max-height: 100px;
+  object-fit: contain;
+}
+
+.tituloEmpresa{
+  text-shadow: 2px 2px 2px rgb(238, 233, 233);
+}
