@@ -1,13 +1,24 @@
-.colorCard{
+.colorCard {
   background: radial-gradient(circle, rgba(238, 174, 202, 0.678) 0%, rgba(148, 188, 233, 0.637) 100%);
+  border: 1px solid #ccc;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column; 
+  height: 100%; 
 }
-.imgCard{
+
+.imgCard {
   height: 200px; 
   width: 100%;
-  object-fit: cover;
-  
+  object-fit: contain; 
 }
-.bodyCard{
-  height: 120px;
-  font-family:'roboto';
+.bodyCard {
+  flex-grow: 1;
+  font-family: 'Roboto';
+  padding: 15px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: space-between; 
 }
+
+

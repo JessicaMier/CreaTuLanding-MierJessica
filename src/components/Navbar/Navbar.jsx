@@ -1,7 +1,7 @@
 import CartWidget from "../CartWidget/CartWidget";
 import './Navbar.css'
 
-const Nabvar= ()=>{
+const Navbar= ()=>{
   return (
     <nav className="bg-secondary d-flex justify-content-between align-items-center"> 
     <img className="logo" src="/Imagenes/Tecnoshop.png" alt="" />
@@ -12,4 +12,4 @@ const Nabvar= ()=>{
   )
 }
 
-export default Nabvar;
+export default Navbar;
