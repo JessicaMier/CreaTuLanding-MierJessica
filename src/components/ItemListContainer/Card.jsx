@@ -30,19 +30,22 @@ const Card = ({ categoria }) => {
     data();
   }, [categoria]);
 
-  // Si hay un ID, busca el producto específico
   const product = id ? cards.find(item => item.id === parseInt(id)) : null;
 
+
+  const titulo = categoria ? `${categoria.charAt(0).toUpperCase() + categoria.slice(1)}` : 'Nuestros productos';
+
   return (
-    <div className='row container'>
-      <h1 className='text-center mt-3 mb-5 fst-italic'>Nuestros productos</h1>
+    <div className='row container'> 
+      <h1 className='text-center mt-3 mb-5 fst-italic'>{titulo}</h1> 
       {id && product ? (
-        <div className='col-12'>
+        <div className='col-12 mb-5 mt-5'>
           <div className='card colorCard'>
             <img src={product.img} className='imgCard' alt={product.nombre} />
             <div className='card-body bodyCard'>
               <h5 className="card-title">{product.nombre}</h5>
               <p className="card-text">{product.descripcion}</p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum reiciendis est qui voluptates voluptate esse reprehenderit amet quisquam, nesciunt suscipit voluptas, inventore recusandae veniam minima, unde exercitationem nam aliquid in!</p>
               <button className="btn btn-dark" onClick={() => handleBuy(product)}>Agregar al carrito</button>
             </div>
           </div>
