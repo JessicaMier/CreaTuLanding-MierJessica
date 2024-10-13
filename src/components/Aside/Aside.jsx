@@ -26,8 +26,11 @@ const Aside = () => {
           <Link to="/accesorios" className="text-dark text-decoration-none fst-italic fw-bold">Accesorios</Link>
         </li>
       </ul>
+      
+     
     </aside>
   );
 };
 
 export default Aside;
+

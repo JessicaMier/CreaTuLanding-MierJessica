@@ -5,6 +5,7 @@ import Navbar from './components/Navbar/Navbar';
 import Aside from './components/Aside/Aside';
 import Card from './components/ItemListContainer/Card'; 
 import Footer from './components/Footer/Footer';
+import NotFound from './components/NotFound';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         <div className="row">
           <aside className="col-md-3">
             <Aside />
-          </aside>
+          </aside> 
           <main className="col-md-9">
             <Routes>
               <Route path="/" element={<Card />} />
@@ -23,6 +24,8 @@ function App() {
               <Route path="/televisores" element={<Card categoria="televisores" />} />
               <Route path="/notebooks" element={<Card categoria="notebooks" />} />
               <Route path="/accesorios" element={<Card categoria="accesorios" />} />
+              <Route path="/producto/:id" element={<Card />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
         </div>

@@ -1,50 +1,69 @@
 import { useEffect, useState } from 'react';
-import './Card.css'
+import { Link, useParams } from 'react-router-dom';
+import './Card.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Card = ({ categoria }) => {
- const [cards, setCards] = useState([])
+  const [cards, setCards] = useState([]);
+  const { id } = useParams();
 
- const handleBuy = (item) => {
-  alert(`Producto agregado al carrito: ${item.nombre}`);
-  
-};
-
- useEffect(() => {
-  const data = async () => {
-    try {
-      const response = await fetch('/data.json');
-      if (!response.ok) {
-        throw new Error('Error en la carga de datos');
-      }
-      const data = await response.json();
-      setCards(data.filter(item => categoria ? item.categoria === categoria : true));
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  const handleBuy = (item) => {
+    alert(`Producto agregado al carrito: ${item.nombre}`);
   };
 
-  data();
-}, [categoria]);
- 
+  useEffect(() => {
+    const data = async () => {
+      try {
+        const response = await fetch('/data.json');
+        if (!response.ok) {
+          throw new Error('Error en la carga de datos');
+        }
+        const data = await response.json();
+        setCards(data.filter(item => 
+          categoria ? item.categoria === categoria : true
+        ));
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    data();
+  }, [categoria]);
+
+  // Si hay un ID, busca el producto específico
+  const product = id ? cards.find(item => item.id === parseInt(id)) : null;
+
   return (
     <div className='row container'>
-      <h1 className='text-center mt-3 mb-5 fst-italic' >Nuestros productos</h1>
-      {cards.map(item =>(
-        <div key={item.id} className='col-6 col-md-4 mb-4'>
+      <h1 className='text-center mt-3 mb-5 fst-italic'>Nuestros productos</h1>
+      {id && product ? (
+        <div className='col-12'>
           <div className='card colorCard'>
-            <img src={item.img} className='imgCard' alt={item.nombre} />
+            <img src={product.img} className='imgCard' alt={product.nombre} />
             <div className='card-body bodyCard'>
-            <h5 className="card-title">{item.nombre}</h5>
-            <p className= "card-text">{item.descripcion}</p>
-            <button className="btn btn-dark"onClick={() => handleBuy(item)}>Agregar al carrito</button>
+              <h5 className="card-title">{product.nombre}</h5>
+              <p className="card-text">{product.descripcion}</p>
+              <button className="btn btn-dark" onClick={() => handleBuy(product)}>Agregar al carrito</button>
             </div>
           </div>
         </div>
-      ))}
+      ) : (
+        cards.map(item => (
+          <div key={item.id} className='col-6 col-md-4 mb-4'>
+            <div className='card colorCard'>
+              <img src={item.img} className='imgCard' alt={item.nombre} />
+              <div className='card-body bodyCard'>
+                <h5 className="card-title">{item.nombre}</h5>
+                <p className="card-text">{item.descripcion}</p>
+                <button className="btn btn-dark" onClick={() => handleBuy(item)}>Agregar al carrito</button>
+                <Link to={`/producto/${item.id}`} className="btn btn-secondary mt-2 text-dark fw-bold">Ver Detalles</Link> 
+              </div>
+            </div>
+          </div>
+        ))
+      )}
     </div>
+  );
+};
 
-  )
-
-}      
 export default Card;
