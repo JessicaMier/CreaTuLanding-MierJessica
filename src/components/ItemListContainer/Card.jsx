@@ -31,16 +31,11 @@ const Card = ({ categoria }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-<<<<<<< HEAD
         
         const productosRef = collection(db, 'productos');
         const snapshot = await getDocs(productosRef);
 
         
-=======
-        const productosRef = collection(db, 'productos');
-        const snapshot = await getDocs(productosRef);
->>>>>>> 3b42e74c809200b29eecdd868f822359ce6f8b8f
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setCards(data.filter(item => 
           categoria ? item.categoria === categoria : true

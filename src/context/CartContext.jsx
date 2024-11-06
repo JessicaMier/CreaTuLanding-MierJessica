@@ -66,7 +66,3 @@ export { CartContext, CartProvider };
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 3b42e74c809200b29eecdd868f822359ce6f8b8f
