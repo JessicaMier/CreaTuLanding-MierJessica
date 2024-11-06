@@ -7,12 +7,8 @@ const Footer = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-4">
-            <h5>Enlaces Rápidos</h5>
-            <ul className="list-unstyled">
-              <li><a href="#about" className="text-light">Sobre Nosotros</a></li>
-              <li><a href="#contact" className="text-light">Contacto</a></li>
-              <li><a href="#privacy" className="text-light">Política de Privacidad</a></li>
-            </ul>
+            <h2>TecnoShop</h2>
+            <img className="logo mb-2 mb-md-0" src="/imagenes/Tecnoshop.png" alt="Logo de Tecno Shop" />
           </div>
           <div className="col-md-4">
             <h5>Contacto</h5>
