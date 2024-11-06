@@ -1,4 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'; 
+import db from '@/config/firebase';
+
 
 const CartContext = createContext();
 
@@ -54,8 +57,45 @@ const CartProvider = ({ children }) => {
     return cartItems.reduce((total, item) => total + item.precio * item.quantity, 0);
   };
 
+  // Confirmar la compra y registrar en Firestore
+  const confirmPurchase = async () => {
+    try {
+      const purchaseDetails = {
+        items: cartItems.map(item => ({
+          id: item.id,
+          nombre: item.nombre,
+          precio: item.precio,
+          cantidad: item.quantity,
+        })),
+        total: getTotalPrice(),
+        fecha: serverTimestamp(), 
+      };
+
+      // Guardar la compra en la colección compras en firestore
+      const docRef = await addDoc(collection(db, 'compras'), purchaseDetails);
+      console.log("Compra registrada con ID:", docRef.id);
+
+      // Vacia el carrito después de la compra
+      clearCart();
+      alert("Compra confirmada y registrada correctamente.");
+
+    } catch (error) {
+      console.error("Error al registrar la compra:", error);
+      alert("Hubo un problema al registrar la compra.");
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, getTotalPrice }}>
+    <CartContext.Provider value={{ 
+      cartItems, 
+      addToCart, 
+      removeFromCart, 
+      increaseQuantity, 
+      decreaseQuantity, 
+      clearCart, 
+      getTotalPrice, 
+      confirmPurchase 
+    }}>
       {children}
     </CartContext.Provider>
   );
@@ -63,6 +103,4 @@ const CartProvider = ({ children }) => {
 
 export const useCart = () => useContext(CartContext);
 export { CartContext, CartProvider };
-
-
 

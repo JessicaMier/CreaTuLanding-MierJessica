@@ -46,7 +46,7 @@
   font-weight: bold; 
 }
 
-.clear-cart-button {
+.clear-cart-button, .confirm-purchase-button{
   display: block; 
   width: 100%; 
   background-color: #4c4e50; 
@@ -56,11 +56,22 @@
   padding: 10px; 
   font-size: 1.2rem; 
   cursor: pointer; 
-  transition: background-color 0.3s; 
+  transition: background-color 0.3s;
+  margin-bottom: 1rem; 
+}
+
+.confirm-purchase-button{
+  background-color: #0056b3;
 }
 
 .clear-cart-button:hover {
   background-color: #0056b3; 
+}
+
+.confirm-purchase-button:hover{
+  background-color: #28a745;
+  color: black;
+  font-weight: bold;
 }
 
 .quantity-controls {
