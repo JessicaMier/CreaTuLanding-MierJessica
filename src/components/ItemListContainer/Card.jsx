@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import './Card.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useCart } from '../../context/CartContext';
+import db from '../../config/firebase'; 
+import { collection, getDocs } from 'firebase/firestore'; 
 
 const Card = ({ categoria }) => {
   const [cards, setCards] = useState([]);
@@ -21,19 +23,21 @@ const Card = ({ categoria }) => {
       [id]: Math.max((prevQuantities[id] || 1) + amount, 1),
     }));
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/data.json');
-        if (!response.ok) {
-          throw new Error('Error en la carga de datos');
-        }
-        const data = await response.json();
+        
+        const productosRef = collection(db, 'productos');
+        const snapshot = await getDocs(productosRef);
+
+        
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setCards(data.filter(item => 
           categoria ? item.categoria === categoria : true
         ));
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error al cargar datos desde Firestore:', error);
       }
     };
 

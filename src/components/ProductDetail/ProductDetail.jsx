@@ -2,26 +2,30 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import './ProductDetail.css';
+import db from '../../config/firebase'; 
+import { doc, getDoc } from 'firebase/firestore'; 
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1); // Estado para la cantidad
+  const [quantity, setQuantity] = useState(1); 
   const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch('/data.json');
-        if (!response.ok) {
-          throw new Error('Error en la carga de datos');
+        const productRef = doc(db, 'productos', id);
+        const productSnap = await getDoc(productRef);
+
+        if (productSnap.exists()) {
+          setProduct({ id: productSnap.id, ...productSnap.data() });
+        } else {
+          console.error('Producto no encontrado');
+          setProduct(null);
         }
-        const data = await response.json();
-        const productFound = data.find(item => item.id === parseInt(id));
-        setProduct(productFound);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error al cargar el producto desde Firestore:', error);
       } finally {
         setLoading(false);
       }
@@ -31,7 +35,7 @@ const ProductDetail = () => {
   }, [id]);
 
   const handleAddToCart = () => {
-    const productToAdd = { ...product, quantity }; // Agregar la cantidad
+    const productToAdd = { ...product, quantity }; 
     addToCart(productToAdd);
     alert(`Producto agregado al carrito: ${product.nombre}`);
   };
@@ -41,7 +45,7 @@ const ProductDetail = () => {
   };
 
   const decreaseQuantity = () => {
-    setQuantity(prev => (prev > 1 ? prev - 1 : 1)); // No permitir que la cantidad sea menor a 1
+    setQuantity(prev => (prev > 1 ? prev - 1 : 1));
   };
 
   if (loading) return <p>Cargando...</p>;
@@ -69,3 +73,5 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+
