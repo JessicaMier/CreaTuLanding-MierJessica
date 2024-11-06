@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Modal, Button } from 'react-bootstrap';
 import './Card.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useCart } from '../../context/CartContext';
@@ -10,11 +11,14 @@ const Card = ({ categoria }) => {
   const [cards, setCards] = useState([]);
   const { addToCart } = useCart();
   const [quantities, setQuantities] = useState({});
+  const [showModal, setShowModal] = useState(false);  
+  const [selectedProduct, setSelectedProduct] = useState(null); 
 
   const handleBuy = (item) => {
     const quantity = quantities[item.id] || 1;
-    addToCart({...item, quantity});
-    alert(`Producto agregado al carrito: ${item.nombre}`);
+    addToCart({ ...item, quantity });
+    setSelectedProduct(item);
+    setShowModal(true); 
   };
 
   const handleQuantityChange = (id, amount) => {
@@ -27,11 +31,8 @@ const Card = ({ categoria }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        
         const productosRef = collection(db, 'productos');
         const snapshot = await getDocs(productosRef);
-
-        
         const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setCards(data.filter(item => 
           categoria ? item.categoria === categoria : true
@@ -40,7 +41,6 @@ const Card = ({ categoria }) => {
         console.error('Error al cargar datos desde Firestore:', error);
       }
     };
-
     fetchData();
   }, [categoria]);
 
@@ -70,11 +70,34 @@ const Card = ({ categoria }) => {
           </div>
         ))}
       </div>
+
+      
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Producto Agregado</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedProduct && (
+            <>
+              <p>El producto <strong>{selectedProduct.nombre}</strong> ha sido agregado al carrito.</p>
+              <p>Precio: ${selectedProduct.precio}</p>
+              <p>Cantidad: {quantities[selectedProduct.id] || 1}</p>
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cerrar
+          </Button>
+          <Link to="/cart">
+            <Button variant="primary" onClick={() => setShowModal(false)}>
+              Ir al Carrito
+            </Button>
+          </Link>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
 
 export default Card;
-
-
-
