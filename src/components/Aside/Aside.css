@@ -9,7 +9,7 @@
 
 @media (max-width: 768px) {
   .asideStyle {
-    margin-left: 0; /* Eliminar margen en pantallas más pequeñas */
+    margin-left: 0;
   }
 }
 
